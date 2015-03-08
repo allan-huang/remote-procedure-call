@@ -2,7 +2,7 @@
 
 **Remote Function Call** is a Netty 4-based Remote Procedure Call (RPC) system.
 
-This is my first GitHub project for open source. I has rewritten the source codes and completes the new practical features.
+This is my first GitHub project for open source. I has rewritten the source codes and completed the new features.
 
 ### Links ###
 
