@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project basedir="." default="build" name="YCHuang RFC JAR Builder">
+<project basedir="." default="build" name="YCHuang RPC JAR Builder">
 	<property environment="env" />
 	<property name="debuglevel" value="source,lines,vars" />
-	<property name="jar.name" value="ychuang-rfc" />
-	<property name="test.jar.name" value="test-ychuang-rfc" />
-	<property name="version.number" value="1.0.0" />
+	<property name="jar.name" value="ychuang-rpc" />
+	<property name="test.jar.name" value="test-ychuang-rpc" />
+	<property name="version.number" value="1.0.1" />
 	<tstamp>
 		<format property="TODAY" pattern="yyyy-MM-dd HH:mm:ss" />
 	</tstamp>
-	<path id="rfc.classpath">
+	<path id="rpc.classpath">
 		<pathelement location="classes" />
 		<fileset dir="lib" includes="**/*.jar" />
 	</path>
@@ -29,7 +29,7 @@
 			<fileset dir="src" excludes="**/*.java" />
 		</copy>
 		<copy includeemptydirs="false" todir="classes">
-			<fileset dir="config" excludes="**/*.tmpl" />
+			<fileset dir="conf" excludes="**/*.tmpl" />
 		</copy>
 	</target>
 	<target name="build-manifest">
@@ -51,15 +51,15 @@
 		<echo level="info">Start to build the ${jar.name}.jar into the ${basedir}\dist ...</echo>
 		<javac nowarn="true" debug="true" debuglevel="${debuglevel}" destdir="classes" source="1.7" target="1.7" includeAntRuntime="false">
 			<src path="src" />
-			<classpath refid="rfc.classpath" />
+			<classpath refid="rpc.classpath" />
 		</javac>
-		<jar basedir="classes" destfile="dist/${jar.name}.jar" level="5">
+		<jar basedir="classes" destfile="dist/${jar.name}-${version.number}.jar" level="5">
 			<metainf dir="META-INF" includes="*" />
-			<include name="tw/me/ychuang/rfc/**" />
+			<include name="tw/me/ychuang/rpc/**" />
 		</jar>
-		<jar basedir="classes" destfile="dist/${test.jar.name}.jar" level="5">
+		<jar basedir="classes" destfile="dist/${test.jar.name}-${version.number}.jar" level="5">
 			<metainf dir="META-INF" includes="*" />
-			<include name="test/tw/me/ychuang/rfc/**" />
+			<include name="test/tw/me/ychuang/rpc/**" />
 		</jar>
 		<echo level="info">Build the ${jar.name}.jar has been completed successfully.</echo>
 	</target>

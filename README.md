@@ -1,8 +1,8 @@
-## Remote Function Call ##
+## Remote Procedure Call ##
 
-**Remote Function Call** is a Netty 4-based Remote Procedure Call (RPC) system.
+**Remote Procedure Call** is a Netty 4-based Remote Procedure Call (RPC) system.
 
-This is my first GitHub project for the Spirit of Open Source. I has rewritten the source codes and completed the new features. Developing a simple Peer-to-peer framework based on RFC framework is my next plan in the future.
+This is my first GitHub project for the Spirit of Open Source. I has rewritten the source codes and completed the new features. Developing a simple Peer-to-peer framework based on RPC framework is my next plan in the future.
 
 
 ### Links ###
@@ -50,13 +50,13 @@ This is my first GitHub project for the Spirit of Open Source. I has rewritten t
 - slf4j-api-1.7.10.jar
 
 ### Get Started ###
-- Please refer to three classes defined in the `test.tw.me.ychuang.rfc` package: `BizServiceSkeleton`, `BizServiceStub`, and `BizServiceTest` classes separately.
+- Please refer to three classes defined in the `test.tw.me.ychuang.rpc` package: `BizServiceSkeleton`, `BizServiceStub`, and `BizServiceTest` classes separately.
 
-- Starting up the client or/and server processes that is dependent on rfc-client.properties or/and rfc-server.properties whether are found in the classpath.   
+- Starting up the client or/and server processes that is dependent on rpc-client.properties or/and rpc-server.properties whether are found in the classpath.   
 
-- `ClientChannelManager` in the `tw.me.ychuang.rfc` package provides several convenient methods for management, e.g. `pauseChannelProxies(serverHost, serverPort)`, `stopChannelProxies(serverHost, serverPort)`, and `restartChannelProxies(serverHost, serverPort)` methods.
+- `ClientChannelManager` in the `tw.me.ychuang.rpc` package provides several convenient methods for management, e.g. `pauseChannelProxies(serverHost, serverPort)`, `stopChannelProxies(serverHost, serverPort)`, and `restartChannelProxies(serverHost, serverPort)` methods.
 
 ### License ###
 
-**Remote Function Call** is released under version 2.0 of the [Apache Version 2.0](http://www.apache.org/licenses/LICENSE-2.0)
+**Remote Procedure Call** is released under version 2.0 of the [Apache Version 2.0](http://www.apache.org/licenses/LICENSE-2.0)
 
