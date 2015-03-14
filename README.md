@@ -2,7 +2,8 @@
 
 **Remote Function Call** is a Netty 4-based Remote Procedure Call (RPC) system.
 
-This is my first GitHub project for open source. I has rewritten the source codes and completed the new features.
+This is my first GitHub project for the Spirit of Open Source. I has rewritten the source codes and completed the new features. Developing a simple Peer-to-peer framework based on RFC framework is my next plan in the future.
+
 
 ### Links ###
 
@@ -35,8 +36,25 @@ This is my first GitHub project for open source. I has rewritten the source code
 - [Hamcrest 1.3](https://code.google.com/p/hamcrest/) or later stable version.
 - [JUnit 4.1.2](http://junit.org/) or later stable version.
 
+### JAR File Dependencies ###
+- commons-lang3-3.3.2.jar
+- jzlib-1.1.3.jar
+- gson-2.3.1.jar
+- hamcrest-core-1.3.jar
+- junit-4.12.jar
+- netty-all-4.0.26.Final.jar
+- log4j-api-2.2.jar
+- log4j-core-2.2.jar
+- log4j-jcl-2.2.jar
+- log4j-slf4j-impl-2.2.jar
+- slf4j-api-1.7.10.jar
+
 ### Get Started ###
-Please refer to three classes defined in the `test.tw.me.ychuang.rfc` package: `BizServiceSkeleton`, `BizServiceStub`, and `BizServiceTest` classes separately.  
+- Please refer to three classes defined in the `test.tw.me.ychuang.rfc` package: `BizServiceSkeleton`, `BizServiceStub`, and `BizServiceTest` classes separately.
+
+- Starting up the client or/and server processes that is dependent on rfc-client.properties or/and rfc-server.properties whether are found in the classpath.   
+
+- `ClientChannelManager` in the `tw.me.ychuang.rfc` package provides several convenient methods for management, e.g. `pauseChannelProxies(serverHost, serverPort)`, `stopChannelProxies(serverHost, serverPort)`, and `restartChannelProxies(serverHost, serverPort)` methods.
 
 ### License ###
 
