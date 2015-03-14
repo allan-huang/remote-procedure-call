@@ -4,7 +4,7 @@
 	<property name="debuglevel" value="source,lines,vars" />
 	<property name="jar.name" value="ychuang-rfc" />
 	<property name="test.jar.name" value="test-ychuang-rfc" />
-	<property name="version.number" value="1.0" />
+	<property name="version.number" value="1.0.0" />
 	<tstamp>
 		<format property="TODAY" pattern="yyyy-MM-dd HH:mm:ss" />
 	</tstamp>
