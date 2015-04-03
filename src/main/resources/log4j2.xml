@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration monitorInterval="30" status="warn" strict="true">
 	<Properties>
-		<Property name="log-path">E:/workspace/mywebspace/logs/rpc</Property>
+		<Property name="log-path">${sys:user.home}/logs/rpc</Property>
 	</Properties>
 	<Appenders>
 		<Console name="Console" target="SYSTEM_OUT">
@@ -43,11 +43,6 @@
 			<AppenderRef ref="3rd-party" />
 		</Root>
 		<Logger name="tw.me.ychuang.rpc" level="debug" additivity="false">
-			<appender-ref ref="rpc" level="info" />
-			<appender-ref ref="rpc-err" level="warn" />
-			<appender-ref ref="Console" level="info" />
-		</Logger>
-		<Logger name="test.tw.me.ychuang.rpc" level="debug" additivity="false">
 			<appender-ref ref="rpc" level="info" />
 			<appender-ref ref="rpc-err" level="warn" />
 			<appender-ref ref="Console" level="info" />

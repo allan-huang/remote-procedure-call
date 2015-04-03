@@ -1,4 +1,4 @@
-package test.tw.me.ychuang.rpc;
+package tw.me.ychuang.rpc;
 
 import java.util.Date;
 

@@ -33,21 +33,20 @@ This is my first GitHub project for the Spirit of Open Source. I has rewritten t
 - [SLF4j 1.7.10](http://www.slf4j.org/) or later stable version.
 - [Log4j 2.2](http://logging.apache.org/log4j/2.x/) or later stable version.
 - [JZlib 1.1.3](http://www.jcraft.com/jzlib/) or later stable version.
-- [Hamcrest 1.3](https://code.google.com/p/hamcrest/) or later stable version.
 - [JUnit 4.1.2](http://junit.org/) or later stable version.
 
 ### JAR File Dependencies ###
-- commons-lang3-3.3.2.jar
-- jzlib-1.1.3.jar
-- gson-2.3.1.jar
-- hamcrest-core-1.3.jar
-- junit-4.12.jar
 - netty-all-4.0.26.Final.jar
+- gson-2.3.1.jar
+- commons-lang3-3.3.2.jar
+- slf4j-api-1.7.10.jar
 - log4j-api-2.2.jar
 - log4j-core-2.2.jar
 - log4j-jcl-2.2.jar
 - log4j-slf4j-impl-2.2.jar
-- slf4j-api-1.7.10.jar
+- jzlib-1.1.3.jar
+- junit-4.12.jar
+- hamcrest-core-1.3.jar
 
 ### Get Started ###
 - Please refer to three classes defined in the `test.tw.me.ychuang.rpc` package: `BizServiceSkeleton`, `BizServiceStub`, and `BizServiceTest` classes separately.

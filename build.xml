@@ -1,66 +1,160 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project basedir="." default="build" name="YCHuang RPC JAR Builder">
+<project basedir="." default="build" xmlns:ivy="antlib:org.apache.ivy.ant" name="Y.C.Huang RPC">
 	<property environment="env" />
+	<property file="build.properties" />
 	<property name="debuglevel" value="source,lines,vars" />
-	<property name="jar.name" value="ychuang-rpc" />
-	<property name="test.jar.name" value="test-ychuang-rpc" />
-	<property name="version.number" value="1.0.1" />
+	<property name="jar.name" value="${rpc.artifact.name}" />
+	<property name="test.jar.name" value="test-${rpc.artifact.name}" />
+	<property name="zip.name" value="${rpc.artifact.name}" />
+	<property name="version.number" value="${rpc.artifact.version}" />
+
+	<property name="src.dir" value="src/main/java" />
+	<property name="test.dir" value="src/test/java" />
+	<property name="src.resource.dir" value="src/main/resources" />
+	<property name="test.resource.dir" value="src/test/resources" />
+	<property name="build.dir" value="target" />
+	<property name="src.classes.dir" value="${build.dir}/classes" />
+	<property name="test.classes.dir" value="${build.dir}/test-classes" />
+	<property name="lib.dir" value="${build.dir}/lib" />
+
+	<property name="compile.lib.dir" value="${lib.dir}/compile" />
+	<property name="runtime.lib.dir" value="${lib.dir}/runtime" />
+	<property name="test.lib.dir" value="${lib.dir}/test" />
+
+	<property name="test.reports.dir" location="${build.dir}/test-reports" />
+
+	<property name="ivy.version" value="2.4.0" />
+	<property name="ivy.url" value="http://repo1.maven.org/maven2/org/apache/ivy/ivy/${ivy.version}/ivy-${ivy.version}.jar" />
+	<property name="ivy.jar.dir" value="${basedir}/ivy" />
+	<property name="ivy.jar.file" value="${ivy.jar.dir}/ivy.jar" />
+	<property name="ivy.reports.dir" location="${build.dir}/ivy-reports" />
+
 	<tstamp>
-		<format property="TODAY" pattern="yyyy-MM-dd HH:mm:ss" />
+		<format property="NOW" pattern="yyyy-MM-dd HH:mm" />
 	</tstamp>
-	<path id="rpc.classpath">
-		<pathelement location="classes" />
-		<fileset dir="lib" includes="**/*.jar" />
+
+	<path id="classpath">
+		<pathelement location="${src.classes.dir}" />
+		<fileset dir="${compile.lib.dir}" includes="**/*.jar" />
 	</path>
-	<target name="build" depends="init">
-		<antcall target="build-jar" />
+
+	<path id="testpath">
+		<pathelement location="${src.classes.dir}" />
+		<pathelement location="${test.classes.dir}" />
+		<fileset dir="${test.lib.dir}" includes="**/*.jar" />
+	</path>
+
+	<target name="download-ivy" unless="skip.download">
+		<mkdir dir="${ivy.jar.dir}" />
+		<echo level="info">Start to download ivy and install it in the ${ivy.jar.dir} ...</echo>
+		<get src="${ivy.url}" dest="${ivy.jar.file}" usetimestamp="true" />
 	</target>
-	<target name="release" depends="init">
-		<antcall target="build-manifest" />
-		<antcall target="build-jar" />
+
+	<target name="install-ivy" depends="download-ivy">
+		<path id="ivy.lib.path">
+			<fileset dir="${ivy.jar.dir}" includes="*.jar" />
+		</path>
+		<taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant" classpathref="ivy.lib.path" />
 	</target>
-	<target name="init">
+
+	<target name="update-depends" depends="install-ivy">
+		<echo level="info">Start to update project dependencies ...</echo>
+		<ivy:retrieve pattern="${lib.dir}/[conf]/[artifact].[ext]" />
+	</target>
+
+	<target name="clean">
+		<delete includeemptydirs="true" failonerror="false">
+			<fileset dir="${src.classes.dir}" includes="**/*" />
+			<fileset dir="${test.classes.dir}" includes="**/*" />
+			<fileset dir="${lib.dir}" includes="**/*" />
+			<fileset dir="${ivy.reports.dir}" includes="**/*" />
+			<fileset dir="${test.reports.dir}" includes="**/*" />
+		</delete>
+	</target>
+
+	<target name="init" depends="clean">
 		<echo level="info">ANT version: ${ant.version}</echo>
+		<echo level="info">IVY version: ${ivy.version}</echo>
 		<echo level="info">JDK version: ${java.version} (${java.vendor})</echo>
 		<echo level="info">Initiate the ${ant.project.name} before building JAR files.</echo>
-		<mkdir dir="dist" />
-		<mkdir dir="classes" />
-		<copy includeemptydirs="false" todir="classes">
-			<fileset dir="src" excludes="**/*.java" />
+
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${src.classes.dir}" />
+		<mkdir dir="${test.classes.dir}" />
+		<mkdir dir="${lib.dir}" />
+
+		<copy includeemptydirs="false" todir="${src.classes.dir}">
+			<fileset dir="${src.resource.dir}" />
 		</copy>
-		<copy includeemptydirs="false" todir="classes">
-			<fileset dir="conf" excludes="**/*.tmpl" />
+		<copy includeemptydirs="false" todir="${test.classes.dir}">
+			<fileset dir="${test.resource.dir}" />
 		</copy>
 	</target>
-	<target name="build-manifest">
-		<buildnumber file="buildnumber.properties" />
-		<mkdir dir="META-INF" />
-		<manifest file="META-INF/MANIFEST.MF">
-			<attribute name="Manifest-Version" value="1.0" />
-			<attribute name="Copyright" value="Yin-Chi Huang" />
-			<attribute name="ANT-Version" value="${ant.version}" />
-			<attribute name="Implementation-Version" value="${version.number}-b${build.number}" />
-			<attribute name="Created-By" value="${ant.project.name}" />
-			<attribute name="Built-By" value="Yin-Chi Huang" />
-			<!-- use the TODAY variable that is created by tstamp -->
-			<attribute name="Built-Date" value="${TODAY}" />
-			<attribute name="Build-Jdk" value="${java.version} (${java.vendor})" />
-		</manifest>
+
+	<target name="build" depends="clean, update-depends, init, pack-jar" description="Compile, test, and pack classes to a JAR file.">
+		<ivy:resolve />
+		<ivy:report todir='${ivy.reports.dir}' graph='false' xml='false' />
 	</target>
-	<target name="build-jar">
-		<echo level="info">Start to build the ${jar.name}.jar into the ${basedir}\dist ...</echo>
-		<javac nowarn="true" debug="true" debuglevel="${debuglevel}" destdir="classes" source="1.7" target="1.7" includeAntRuntime="false">
-			<src path="src" />
-			<classpath refid="rpc.classpath" />
+
+	<target name="compile">
+		<echo level="info">Start to compile all java sources into classes and put them into the ${basedir}/${build.dir} ...</echo>
+
+		<copy includeemptydirs="false" todir="${src.classes.dir}">
+			<fileset dir="${src.dir}" excludes="**/*.java" />
+		</copy>
+		<javac encoding="UTF-8" nowarn="true" debug="true" debuglevel="${debuglevel}" destdir="${src.classes.dir}" source="1.7" target="1.7" includeantruntime="false">
+			<src path="${src.dir}" />
+			<classpath refid="classpath" />
 		</javac>
-		<jar basedir="classes" destfile="dist/${jar.name}-${version.number}.jar" level="5">
-			<metainf dir="META-INF" includes="*" />
-			<include name="tw/me/ychuang/rpc/**" />
-		</jar>
-		<jar basedir="classes" destfile="dist/${test.jar.name}-${version.number}.jar" level="5">
-			<metainf dir="META-INF" includes="*" />
-			<include name="test/tw/me/ychuang/rpc/**" />
-		</jar>
-		<echo level="info">Build the ${jar.name}.jar has been completed successfully.</echo>
+		<echo level="info">Compile all java sources has been completed successfully.</echo>
 	</target>
+
+	<target name="compile-test" depends="compile">
+		<echo level="info">Start to compile all test sources into classes and put them into the ${basedir}/${build.dir} ...</echo>
+
+		<copy includeemptydirs="false" todir="${test.classes.dir}">
+			<fileset dir="${test.dir}" excludes="**/*.java" />
+		</copy>
+		<javac encoding="UTF-8" nowarn="true" debug="true" debuglevel="${debuglevel}" destdir="${src.classes.dir}" source="1.7" target="1.7" includeantruntime="false">
+			<src path="${test.dir}" />
+			<classpath refid="testpath" />
+		</javac>
+		<echo level="info">Compile all java sources has been completed successfully.</echo>
+	</target>
+
+	<target name="test" depends="compile-test">
+		<mkdir dir="${test.reports.dir}" />
+		<junit printsummary="yes" haltonfailure="yes">
+			<classpath refid="testpath" />
+			<formatter type="plain" />
+			<formatter type="xml" />
+
+			<batchtest fork="yes" todir="${test.reports.dir}">
+				<fileset dir="${test.dir}">
+					<include name="**/*Test*.java" />
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>
+
+	<target name="pack-jar" depends="test">
+		<echo level="info">Start to build the ${jar.name}-${version.number}.jar into the ${basedir}/${build.dir} ...</echo>
+		<mkdir dir="${basedir}/META-INF" />
+
+		<jar basedir="${src.classes.dir}" destfile="${build.dir}/${jar.name}-${version.number}.jar" level="5">
+			<manifest>
+				<attribute name="Manifest-Version" value="1.0" />
+				<attribute name="Copyright" value="Yin-Chi Huang" />
+				<attribute name="License" value="Apache License 2.0" />
+				<attribute name="ANT-Version" value="${ant.version}" />
+				<attribute name="Implementation-Version" value="${version.number}" />
+				<attribute name="Built-Date" value="${NOW}" />
+				<attribute name="Build-Jdk" value="${java.version} (${java.vendor})" />
+			</manifest>
+			<include name="tw/me/ychuang/rpc/**" />
+			<include name="commons-logging.properties" />
+		</jar>
+		<echo level="info">Build the ${jar.name}-${version.number}.jar has been completed successfully.</echo>
+	</target>
+
 </project>

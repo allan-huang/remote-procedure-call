@@ -99,7 +99,8 @@ public class CommandReflector extends CommandExecutor {
 			log.info("Finish to execute the method of the skeleton class. skeleton: {}, method: {}", command.getSkeleton(), command.getMethod());
 
 		} catch (InvocationTargetException e) {
-			RpcException err = new ServerSideException("Fail to invoke the matching method of the specified skeleton class.", e.getCause());
+			RpcException err = new ServerSideException("Fail to invoke the matching method of the specified skeleton class. skeleton: " + command.getSkeleton()
+					+ ", method: " + command.getMethod(), e.getCause());
 			err.addContextValue("Skeleton", command.getSkeleton()).addContextValue("Method", command.getMethod())
 					.addContextValue("Parameters", command.getParameters()).addContextValue("Parameter Classes", command.getParamClasses());
 
@@ -114,7 +115,8 @@ public class CommandReflector extends CommandExecutor {
 			result = new Result(e, e.getClass());
 
 		} catch (Throwable e) {
-			RpcException err = new ServerSideException("Fail to invoke the matching method of the specified skeleton class.", e);
+			RpcException err = new ServerSideException("Fail to invoke the matching method of the specified skeleton class. skeleton: " + command.getSkeleton()
+					+ ", method: " + command.getMethod(), e);
 			err.addContextValue("Skeleton", command.getSkeleton()).addContextValue("Method", command.getMethod())
 					.addContextValue("Parameters", command.getParameters()).addContextValue("Parameter Classes", command.getParamClasses());
 

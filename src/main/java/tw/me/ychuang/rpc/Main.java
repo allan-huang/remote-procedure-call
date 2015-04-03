@@ -6,7 +6,7 @@ import tw.me.ychuang.rpc.client.ClientChannelManager;
 import tw.me.ychuang.rpc.server.ServerChannelManager;
 
 /**
- * The main function of Netty 4-based Remote Procedure Call (RPC) system.
+ * The main function of Netty 4-based Remote Function Call (RPC) system.
  * 
  * @author Y.C. Huang
  */

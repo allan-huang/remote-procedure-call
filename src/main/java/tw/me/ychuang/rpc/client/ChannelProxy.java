@@ -338,8 +338,7 @@ public class ChannelProxy {
 	 */
 	public ResponseFuture<Response> send(Command command) throws RpcException {
 		if (false == this.isAvailable()) {
-			RpcException error = new ClientSideException("This channel proxy is unavailable.").addContextValue("Channel Proxy", this);
-
+			RpcException error = new ClientSideException("This channel proxy is unavailable. channel proxy: " + this);
 			log.warn(error.getMessage(), error);
 			throw error;
 		}

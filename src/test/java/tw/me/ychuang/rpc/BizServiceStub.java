@@ -1,14 +1,10 @@
-package test.tw.me.ychuang.rpc;
+package tw.me.ychuang.rpc;
 
 import java.util.Date;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import tw.me.ychuang.rpc.Command;
-import tw.me.ychuang.rpc.Response;
-import tw.me.ychuang.rpc.ResponseFuture;
-import tw.me.ychuang.rpc.Result;
 import tw.me.ychuang.rpc.client.ChannelProxy;
 import tw.me.ychuang.rpc.client.ClientChannelManager;
 import tw.me.ychuang.rpc.client.ClientMeasurer;
@@ -23,7 +19,7 @@ import tw.me.ychuang.rpc.exception.ServerSideException;
 public class BizServiceStub {
 	private static final Logger log = LoggerFactory.getLogger(BizServiceStub.class);
 
-	private static final String SKELETON_CLASS = "test.tw.me.ychuang.rpc.BizServiceSkeleton";
+	private static final String SKELETON_CLASS = "tw.me.ychuang.rpc.BizServiceSkeleton";
 
 	/**
 	 * Apply a lazy-loaded singleton - Initialization on Demand Holder.<br>

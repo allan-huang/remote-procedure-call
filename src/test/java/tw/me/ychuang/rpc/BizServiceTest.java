@@ -1,4 +1,4 @@
-package test.tw.me.ychuang.rpc;
+package tw.me.ychuang.rpc;
 
 import io.netty.util.internal.logging.InternalLoggerFactory;
 import io.netty.util.internal.logging.Slf4JLoggerFactory;
