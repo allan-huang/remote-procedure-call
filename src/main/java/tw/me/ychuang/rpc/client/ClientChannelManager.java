@@ -26,12 +26,15 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import tw.me.ychuang.rpc.Constants;
 import tw.me.ychuang.rpc.Constants.ChannelSelectionType;
+import tw.me.ychuang.rpc.config.AutoReloadListener;
 import tw.me.ychuang.rpc.exception.ClientSideException;
 import tw.me.ychuang.rpc.exception.RpcException;
 
@@ -41,7 +44,7 @@ import tw.me.ychuang.rpc.exception.RpcException;
  * 
  * @author Y.C. Huang
  */
-public class ClientChannelManager {
+public class ClientChannelManager implements AutoReloadListener {
 	private static final Logger log = LoggerFactory.getLogger(ClientChannelManager.class);
 
 	/**
@@ -58,6 +61,8 @@ public class ClientChannelManager {
 
 	private ClientChannelManager() {
 		super();
+
+		ClientProperties.getInstance().register(this);
 	}
 
 	/**
@@ -130,32 +135,30 @@ public class ClientChannelManager {
 			return false;
 		}
 
-		ClientProperties propertyLoader = ClientProperties.getInstance();
-		if (propertyLoader.isEmpty()) {
+		PropertiesConfiguration config = ClientProperties.getInstance().getConfiguration();
+		if (config.isEmpty()) {
 			return false;
 		}
 
 		List<RemoteServer> remoteServerList = new ArrayList<>();
-		Iterator<Entry<Object, Object>> iterEntries = propertyLoader.entrySet().iterator();
-		while (iterEntries.hasNext()) {
-			Entry<Object, Object> entry = iterEntries.next();
-			String key = (String) entry.getKey();
 
-			if (StringUtils.startsWith(key, "remote.server.host")) {
-				String serverHost = (String) entry.getValue();
-				String serverId = StringUtils.substringAfterLast(key, ".");
+		Iterator<String> hostKeys = config.getKeys("remote.server.host");
+		while (hostKeys.hasNext()) {
+			String host = hostKeys.next();
 
-				StringBuilder portKey = new StringBuilder("remote.server.port");
-				portKey.append('.').append(serverId);
+			String serverHost = config.getString(host);
+			String serverId = StringUtils.substringAfterLast(host, ".");
 
-				int serverProt = propertyLoader.getPropertyAsInt(portKey.toString(), 0);
-				if (serverProt != 0) {
-					int serverSize = remoteServerList.size() + 1;
-					RemoteServer remoteServer = new RemoteServer(serverSize, serverHost, serverProt);
-					remoteServerList.add(remoteServer);
+			StringBuilder portKey = new StringBuilder("remote.server.port");
+			portKey.append('.').append(serverId);
 
-					log.info("Find a pair of remote.server.host: {}, remote.server.port: {}", serverHost, serverProt);
-				}
+			int serverProt = config.getInt(portKey.toString(), 0);
+			if (serverProt != 0) {
+				int serverSize = remoteServerList.size() + 1;
+				RemoteServer remoteServer = new RemoteServer(serverSize, serverHost, serverProt);
+				remoteServerList.add(remoteServer);
+
+				log.info("Find a pair of remote.server.host: {}, remote.server.port: {}", serverHost, serverProt);
 			}
 		}
 
@@ -165,14 +168,14 @@ public class ClientChannelManager {
 
 		log.info("Start to start up a Netty Channel...");
 
-		int evtExecutorSize = propertyLoader.getPropertyAsInt("client.event.executor.size", Constants.DEFAULT_THREAD_SIZE);
+		int evtExecutorSize = config.getInt("client.event.executor.size", Constants.DEFAULT_THREAD_SIZE);
 		log.info("Find client.event.executor.size: {}", evtExecutorSize);
 
 		// initiate specific threads for Netty Client
 		executorGroup = new DefaultEventExecutorGroup(evtExecutorSize);
 		eventLoopGroup = new NioEventLoopGroup();
 
-		int totalChannel = propertyLoader.getPropertyAsInt("client.channel.size", Constants.DEFAULT_THREAD_SIZE);
+		int totalChannel = config.getInt("client.channel.size", Constants.DEFAULT_THREAD_SIZE);
 		log.info("Find client.channel.size: {}", totalChannel);
 
 		Channel channel = null;
@@ -262,6 +265,21 @@ public class ClientChannelManager {
 		this.shutdownAllChannelProxies();
 
 		log.info("Finish to shutdown a Netty Client.");
+	}
+
+	@Override
+	public void loadConfiguration(PropertiesConfiguration config) {
+		// nothing to do
+	}
+
+	@Override
+	public void refreshConfiguration(PropertiesConfiguration config) {
+		log.info("Receive a event notifies that the client properties file has been updated.");
+
+		this.shutdown();
+		this.startUp();
+
+		log.info("Finish to restart the client channel manager.");
 	}
 
 	private void addChannelProxy(ChannelProxy newChannelProxy) {
@@ -361,8 +379,8 @@ public class ClientChannelManager {
 	 * @throws RpcException if there is no available channel.
 	 */
 	public ChannelProxy selectChannelProxy() throws RpcException {
-		ClientProperties propertyLoader = ClientProperties.getInstance();
-		String selectionType = propertyLoader.getProperty("client.channel.selection.type", ChannelSelectionType.round_robin.toString());
+		Configuration config = ClientProperties.getInstance().getConfiguration();
+		String selectionType = config.getString("client.channel.selection.type", ChannelSelectionType.round_robin.toString());
 
 		log.info("Start to select a channel proxy by {} rule.", selectionType);
 

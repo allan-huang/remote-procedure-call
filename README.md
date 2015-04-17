@@ -30,6 +30,7 @@ This is my first GitHub project for the Spirit of Open Source. I has rewritten t
 - [Netty 4.0.27](http://netty.io/index.html) or later stable version except Netty 5.0.
 - [Google Gson 2.3.1](https://code.google.com/p/google-gson/) or later stable version.
 - [Apache Commons Lang 3.3.2](http://commons.apache.org/proper/commons-lang/index.html) or later stable version.
+- [Apache Commons Configuration 1.10](https://commons.apache.org/proper/commons-configuration/index.html) or later stable version.
 - [SLF4j 1.7.12](http://www.slf4j.org/) or later stable version.
 - [Log4j 2.2](http://logging.apache.org/log4j/2.x/) or later stable version.
 - [JZlib 1.1.3](http://www.jcraft.com/jzlib/) or later stable version.
@@ -39,6 +40,7 @@ This is my first GitHub project for the Spirit of Open Source. I has rewritten t
 - netty-all-4.0.27.Final.jar
 - gson-2.3.1.jar
 - commons-lang3-3.3.2.jar
+- commons-configuration-1.10.jar
 - slf4j-api-1.7.12.jar
 - log4j-api-2.2.jar
 - log4j-core-2.2.jar

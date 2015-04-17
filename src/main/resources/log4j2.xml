@@ -4,7 +4,7 @@
 		<Property name="log-path">${sys:user.home}/logs/rpc</Property>
 	</Properties>
 	<Appenders>
-		<Console name="Console" target="SYSTEM_OUT">
+		<Console name="console" target="SYSTEM_OUT">
 			<PatternLayout pattern="%t %d %-5p [%C.%M:%L] - %m%n" />
 		</Console>
 		<RollingFile name="3rd-party" fileName="${log-path}/3rd-party.log"
@@ -45,7 +45,7 @@
 		<Logger name="tw.me.ychuang.rpc" level="debug" additivity="false">
 			<appender-ref ref="rpc" level="info" />
 			<appender-ref ref="rpc-err" level="warn" />
-			<appender-ref ref="Console" level="info" />
+			<appender-ref ref="console" level="info" />
 		</Logger>		
 	</Loggers>
 </Configuration>

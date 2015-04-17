@@ -12,22 +12,21 @@ import io.netty.util.concurrent.EventExecutorGroup;
 import java.net.InetSocketAddress;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Map.Entry;
 import java.util.Set;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.commons.configuration.PropertiesConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import tw.me.ychuang.rpc.Constants;
+import tw.me.ychuang.rpc.config.AutoReloadListener;
 
 /**
  * Starts up and shuts down Netty thread pool.
  * 
  * @author Y.C. Huang
  */
-public class ServerChannelManager {
+public class ServerChannelManager implements AutoReloadListener {
 	private static final Logger log = LoggerFactory.getLogger(ServerChannelManager.class);
 
 	/**
@@ -44,6 +43,8 @@ public class ServerChannelManager {
 
 	private ServerChannelManager() {
 		super();
+
+		ServerProperties.getInstance().register(this);
 	}
 
 	/**
@@ -85,25 +86,20 @@ public class ServerChannelManager {
 			return false;
 		}
 
-		ServerProperties propertyLoader = ServerProperties.getInstance();
-		if (propertyLoader.isEmpty()) {
+		PropertiesConfiguration config = ServerProperties.getInstance().getConfiguration();
+		if (config.isEmpty()) {
 			return false;
 		}
 
 		Set<Integer> localPorts = new HashSet<>();
-		Iterator<Entry<Object, Object>> iterEntries = propertyLoader.entrySet().iterator();
-		while (iterEntries.hasNext()) {
-			Entry<Object, Object> entry = iterEntries.next();
-			String key = (String) entry.getKey();
 
-			if (StringUtils.startsWith(key, "server.local.port")) {
-				String value = (String) entry.getValue();
+		Iterator<String> portKeys = config.getKeys("server.local.port");
+		while (portKeys.hasNext()) {
+			String portKey = portKeys.next();
+			Integer localPort = config.getInteger(portKey, 9090);
+			localPorts.add(localPort);
 
-				Integer localPort = NumberUtils.createInteger(value);
-				localPorts.add(localPort);
-
-				log.info("Find a server.local.port: {}", localPort);
-			}
+			log.info("Find a server.local.port: {}", localPort);
 		}
 
 		if (localPorts.isEmpty()) {
@@ -112,8 +108,8 @@ public class ServerChannelManager {
 
 		log.info("Start to start up a Netty Server...");
 
-		int evtExecutorSize = propertyLoader.getPropertyAsInt("server.event.executor.size", Constants.DEFAULT_THREAD_SIZE);
-		int serverIoThreadSize = propertyLoader.getPropertyAsInt("server.io.thread.size", Constants.DEFAULT_THREAD_SIZE);
+		int evtExecutorSize = config.getInt("server.event.executor.size", Constants.DEFAULT_THREAD_SIZE);
+		int serverIoThreadSize = config.getInt("server.io.thread.size", Constants.DEFAULT_THREAD_SIZE);
 
 		log.info("Find server.event.executor.size: {}, server.io.thread.size: {}", evtExecutorSize, serverIoThreadSize);
 
@@ -203,5 +199,20 @@ public class ServerChannelManager {
 		}
 
 		log.info("Finish to shutdown a Netty Server.");
+	}
+
+	@Override
+	public void loadConfiguration(PropertiesConfiguration config) {
+		// nothing to do
+	}
+
+	@Override
+	public void refreshConfiguration(PropertiesConfiguration config) {
+		log.info("Receive a event notifies that the server properties file has been updated.");
+
+		this.shutdown();
+		this.startUp();
+
+		log.info("Finish to restart the server channel manager.");
 	}
 }

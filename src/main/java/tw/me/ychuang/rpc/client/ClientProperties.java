@@ -1,14 +1,10 @@
 package tw.me.ychuang.rpc.client;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import tw.me.ychuang.rpc.config.AutoReloadProperties;
 
-import tw.me.ychuang.rpc.RpcProperties;
+public class ClientProperties extends AutoReloadProperties {
 
-public class ClientProperties extends RpcProperties {
-	private static final Logger log = LoggerFactory.getLogger(ClientProperties.class);
-
-	private static final String PROPERTY_FILE_PATH = "/rpc-client.properties";
+	private static final String PROPERTIES_CLASSPATH = "/rpc-client.properties";
 
 	/**
 	 * Apply a lazy-loaded singleton - Initialization on Demand Holder.<br>
@@ -23,6 +19,11 @@ public class ClientProperties extends RpcProperties {
 	}
 
 	private ClientProperties() {
-		super(PROPERTY_FILE_PATH);
+		super();
+	}
+
+	@Override
+	public String getPropertiesClasspath() {
+		return PROPERTIES_CLASSPATH;
 	}
 }

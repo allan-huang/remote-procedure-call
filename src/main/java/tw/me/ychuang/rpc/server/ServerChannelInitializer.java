@@ -12,6 +12,7 @@ import io.netty.handler.codec.string.StringEncoder;
 import io.netty.util.CharsetUtil;
 import io.netty.util.concurrent.EventExecutorGroup;
 
+import org.apache.commons.configuration.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,8 +55,8 @@ public class ServerChannelInitializer extends ChannelInitializer<SocketChannel> 
 		super();
 		this.executorGroup = executorGroup;
 
-		ServerProperties propertyLoader = ServerProperties.getInstance();
-		this.compression = propertyLoader.getPropertyAsBool("server.channel.stream.compression", false);
+		Configuration config = ServerProperties.getInstance().getConfiguration();
+		this.compression = config.getBoolean("server.channel.stream.compression", false);
 	}
 
 	/*

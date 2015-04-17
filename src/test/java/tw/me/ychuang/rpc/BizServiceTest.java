@@ -17,8 +17,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import tw.me.ychuang.rpc.client.ClientChannelManager;
+import tw.me.ychuang.rpc.client.ClientProperties;
 import tw.me.ychuang.rpc.exception.ServerSideException;
 import tw.me.ychuang.rpc.server.ServerChannelManager;
+import tw.me.ychuang.rpc.server.ServerProperties;
 
 public class BizServiceTest {
 	private static final Logger log = LoggerFactory.getLogger(BizServiceTest.class);
@@ -39,6 +41,9 @@ public class BizServiceTest {
 
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
+		ClientProperties.getInstance().unload();
+		ServerProperties.getInstance().unload();
+
 		ClientChannelManager.getInstance().shutdown();
 		ServerChannelManager.getInstance().shutdown();
 	}

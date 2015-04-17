@@ -12,16 +12,18 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import tw.me.ychuang.rpc.RpcProperties;
 import tw.me.ychuang.rpc.client.ClientChannelManager;
 import tw.me.ychuang.rpc.client.ClientMeasurer;
+import tw.me.ychuang.rpc.client.ClientProperties;
 import tw.me.ychuang.rpc.server.ServerChannelManager;
 import tw.me.ychuang.rpc.server.ServerMeasurer;
+import tw.me.ychuang.rpc.server.ServerProperties;
 
 /**
  * Main function of all test cases.
@@ -30,8 +32,6 @@ import tw.me.ychuang.rpc.server.ServerMeasurer;
  */
 public class Simulator {
 	private static final Logger log = LoggerFactory.getLogger(Simulator.class);
-
-	private static final String PROPERTY_FILE_PATH = "/rpc-simulator.properties";
 
 	public static enum RequestModeType {
 		urgent, heavy, normal, idle;
@@ -61,8 +61,6 @@ public class Simulator {
 		InternalLoggerFactory.setDefaultFactory(new Slf4JLoggerFactory());
 	}
 
-	private static RpcProperties propertyLoader;
-
 	public static void main(String[] args) throws Exception {
 		ServerChannelManager.getInstance().startUp();
 		boolean clientStartUp = ClientChannelManager.getInstance().startUp();
@@ -70,25 +68,29 @@ public class Simulator {
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 			@Override
 			public void run() {
+				ClientProperties.getInstance().unload();
+				ServerProperties.getInstance().unload();
+
 				ClientChannelManager.getInstance().shutdown();
 				ServerChannelManager.getInstance().shutdown();
+
 				ClientMeasurer.showStatistics();
 				ServerMeasurer.showStatistics();
 			}
 		});
 
-		RpcProperties propertyLoader = new RpcProperties(PROPERTY_FILE_PATH);
-		if (propertyLoader.isEmpty()) {
+		PropertiesConfiguration config = SimulatorProperties.getInstance().getConfiguration();
+		if (config.isEmpty()) {
 			return;
 		}
 
-		int repeatTimes = propertyLoader.getPropertyAsInt("client.test.repeat.time", 1);
-		int requestSize = propertyLoader.getPropertyAsInt("client.request.size", 1);
-		int requestPeriod = propertyLoader.getPropertyAsInt("client.request.period", 100);
-		int sampleLength = propertyLoader.getPropertyAsInt("client.sample.length", 100);
+		int repeatTimes = config.getInt("client.test.repeat.time", 1);
+		int requestSize = config.getInt("client.request.size", 1);
+		int requestPeriod = config.getInt("client.request.period", 100);
+		int sampleLength = config.getInt("client.sample.length", 100);
 
 		RequestModeType requestMode = RequestModeType.idle;
-		String requestModeStr = propertyLoader.getProperty("client.request.mode");
+		String requestModeStr = config.getString("client.request.mode");
 		RequestModeType requestModeType = null;
 		if (RequestModeType.checkType(requestModeStr)) {
 			requestMode = RequestModeType.valueOf(requestModeStr);

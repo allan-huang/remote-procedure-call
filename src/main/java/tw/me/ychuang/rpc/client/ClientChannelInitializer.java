@@ -15,6 +15,7 @@ import io.netty.util.concurrent.EventExecutorGroup;
 
 import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.configuration.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -67,8 +68,8 @@ public class ClientChannelInitializer extends ChannelInitializer<SocketChannel> 
 		super();
 		this.executorGroup = executorGroup;
 
-		ClientProperties propertyLoader = ClientProperties.getInstance();
-		this.compression = propertyLoader.getPropertyAsBool("client.channel.stream.compression", false);
+		Configuration config = ClientProperties.getInstance().getConfiguration();
+		this.compression = config.getBoolean("client.channel.stream.compression", false);
 	}
 
 	/*
