@@ -12,6 +12,10 @@ public abstract class BasePathProperties {
 	protected PropertiesConfiguration config;
 
 	public final PropertiesConfiguration getConfiguration() {
+		if (this.config == null) {
+			this.load();
+		}
+
 		return this.config;
 	}
 
@@ -24,6 +28,8 @@ public abstract class BasePathProperties {
 
 		return fileUrl;
 	}
+
+	public abstract void load();
 
 	public abstract String getPropertiesClasspath();
 }
