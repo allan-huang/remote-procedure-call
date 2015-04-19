@@ -2,8 +2,12 @@ package tw.me.ychuang.rpc;
 
 import tw.me.ychuang.rpc.config.ReadOnlyProperties;
 
+/**
+ * A container that wraps a specified configuration for {@link Simulator}.
+ * 
+ * @author Y.C. Huang
+ */
 public class SimulatorProperties extends ReadOnlyProperties {
-
 	private static final String PROPERTIES_CLASSPATH = "/rpc-simulator.properties";
 
 	/**
@@ -20,7 +24,6 @@ public class SimulatorProperties extends ReadOnlyProperties {
 
 	private SimulatorProperties() {
 		super();
-		this.load();
 	}
 
 	@Override

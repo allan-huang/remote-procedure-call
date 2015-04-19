@@ -247,11 +247,15 @@ public class ClientChannelManager implements AutoReloadListener {
 	 * Shuts down Netty thread pool.
 	 */
 	public void shutdown() {
-		if (false == this.started) {
-			return;
+		synchronized (this) {
+			if (false == this.started) {
+				return;
+			}
 		}
 
 		log.info("Start to shutdown a Netty Client...");
+
+		this.shutdownAllChannelProxies();
 
 		// Shutdown bootstrap and thread pools; release all resources
 		if (executorGroup != null) {
@@ -262,18 +266,27 @@ public class ClientChannelManager implements AutoReloadListener {
 			eventLoopGroup.shutdownGracefully().awaitUninterruptibly();
 		}
 
-		this.shutdownAllChannelProxies();
+		// for restart
+		this.started = false;
 
 		log.info("Finish to shutdown a Netty Client.");
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see tw.me.ychuang.rpc.config.ReadOnlyListener#loadConfiguration(org.apache.commons.configuration.PropertiesConfiguration)
+	 */
 	@Override
-	public void loadConfiguration(PropertiesConfiguration config) {
+	public void loadConfiguration(PropertiesConfiguration loadedConfig) {
 		// nothing to do
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see tw.me.ychuang.rpc.config.AutoReloadListener#refreshedConfiguration(org.apache.commons.configuration.PropertiesConfiguration)
+	 */
 	@Override
-	public void refreshConfiguration(PropertiesConfiguration config) {
+	public void refreshedConfiguration(PropertiesConfiguration refreshedonfig) {
 		log.info("Receive a event notifies that the client properties file has been updated.");
 
 		this.shutdown();

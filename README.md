@@ -36,26 +36,15 @@ This is my first GitHub project for the Spirit of Open Source. I has rewritten t
 - [JZlib 1.1.3](http://www.jcraft.com/jzlib/) or later stable version.
 - [JUnit 4.1.2](http://junit.org/) or later stable version.
 
-### JAR File Dependencies ###
-- netty-all-4.0.27.Final.jar
-- gson-2.3.1.jar
-- commons-lang3-3.3.2.jar
-- commons-configuration-1.10.jar
-- slf4j-api-1.7.12.jar
-- log4j-api-2.2.jar
-- log4j-core-2.2.jar
-- log4j-jcl-2.2.jar
-- log4j-slf4j-impl-2.2.jar
-- jzlib-1.1.3.jar
-- junit-4.12.jar
-- hamcrest-core-1.3.jar
-
 ### Get Started ###
+
 - Please refer to three classes defined in the `test.tw.me.ychuang.rpc` package: `BizServiceSkeleton`, `BizServiceStub`, and `BizServiceTest` classes separately.
 
-- Starting up the client or/and server processes that is dependent on rpc-client.properties or/and rpc-server.properties whether are found in the classpath.   
+- A main class is `Main` in the `tw.me.ychuang.rpc`. Starting up the client or/and server processes that is dependent on rpc-client.properties or/and rpc-server.properties whether are found in the classpath.   
 
-- `ClientChannelManager` in the `tw.me.ychuang.rpc` package provides several convenient methods for management, e.g. `pauseChannelProxies(serverHost, serverPort)`, `stopChannelProxies(serverHost, serverPort)`, and `restartChannelProxies(serverHost, serverPort)` methods.
+- Another main class is `Simulator` in the `tw.me.ychuang.rpc`. It provides several scenarios to simulate some use cases, e.g. urgent and heavy user requests. Please refer to rpc-simluator.properties. Please avoid starting up the `Main` class and `Simulator` class at the same time.
+
+- `ClientChannelManager` in the `tw.me.ychuang.rpc` package provides several convenient methods for management, e.g. `pauseChannelProxies(serverHost, serverPort)`, `stopChannelProxies(serverHost, serverPort)`, and `restartChannelProxies(serverHost, serverPort)` methods.  
 
 ### License ###
 

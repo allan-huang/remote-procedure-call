@@ -2,8 +2,12 @@ package tw.me.ychuang.rpc.client;
 
 import tw.me.ychuang.rpc.config.AutoReloadProperties;
 
+/**
+ * A container that wraps a associated configuration for {@link ClientChannelManager}.
+ * 
+ * @author Y.C. Huang
+ */
 public class ClientProperties extends AutoReloadProperties {
-
 	private static final String PROPERTIES_CLASSPATH = "/rpc-client.properties";
 
 	/**
@@ -22,6 +26,10 @@ public class ClientProperties extends AutoReloadProperties {
 		super();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see tw.me.ychuang.rpc.config.BasePathProperties#getPropertiesClasspath()
+	 */
 	@Override
 	public String getPropertiesClasspath() {
 		return PROPERTIES_CLASSPATH;

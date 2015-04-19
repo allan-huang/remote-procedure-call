@@ -4,6 +4,7 @@ import io.netty.util.CharsetUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * System constants
@@ -27,6 +28,10 @@ public final class Constants {
 	public static String ISO_8601_PATTERN = "yyyy-MM-dd'T'hh:mm:ssZ";
 
 	public static String REQUEST_BOUNDARY = new String(new byte[] { 0 }, CharsetUtil.UTF_8);
+
+	public static long DEFAULT_PERIOD = 10;
+
+	public static TimeUnit DEFAULT_UNIT = TimeUnit.SECONDS;
 
 	/**
 	 * Channel Selection Type<br>

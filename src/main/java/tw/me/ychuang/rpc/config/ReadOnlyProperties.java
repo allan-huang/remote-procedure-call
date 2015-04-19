@@ -7,7 +7,10 @@ import java.util.Set;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
 
-public abstract class ReadOnlyProperties extends BasePathProperties {
+public abstract class ReadOnlyProperties extends ClassPathProperties {
+	/**
+	 * A set of {@link ReadOnlyListener} that will be notified
+	 */
 	private final Set<ReadOnlyListener> listeners = new HashSet<>();
 
 	/**
@@ -17,6 +20,11 @@ public abstract class ReadOnlyProperties extends BasePathProperties {
 		super();
 	}
 
+	/**
+	 * Registers a {@link ReadOnlyListener}.
+	 * 
+	 * @param a listener
+	 */
 	public final void register(ReadOnlyListener listener) {
 		if (listener == null) {
 			throw new IllegalArgumentException("listener is null");
@@ -29,16 +37,30 @@ public abstract class ReadOnlyProperties extends BasePathProperties {
 		}
 	}
 
+	/**
+	 * Unregisters a {@link AutoReloadListener}.
+	 * 
+	 * @param a listener
+	 */
 	public final void unregister(ReadOnlyListener listener) {
 		if (listener != null) {
 			this.listeners.remove(listener);
 		}
 	}
 
+	/**
+	 * Gets all registered listeners.
+	 * 
+	 * @return listeners
+	 */
 	public final Collection<ReadOnlyListener> getListeners() {
 		return this.listeners;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see tw.me.ychuang.rpc.config.BasePathProperties#load()
+	 */
 	public final void load() {
 		if (this.config != null) {
 			return;
@@ -46,6 +68,7 @@ public abstract class ReadOnlyProperties extends BasePathProperties {
 
 		this.log.info("Start to load a properties file. url: {}", this.getFileUrl());
 
+		// load a properties file
 		try {
 			this.config = new PropertiesConfiguration();
 			this.config.setURL(this.getFileUrl());
@@ -55,6 +78,7 @@ public abstract class ReadOnlyProperties extends BasePathProperties {
 			throw new ConfigLoadException("Fail to load a properties file.", e).addContextValue("File URL", this.getFileUrl());
 		}
 
+		// notifiy all listeners to read a loaded configuration
 		for (ReadOnlyListener listener : this.listeners) {
 			listener.loadConfiguration(this.config);
 		}

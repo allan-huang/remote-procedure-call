@@ -2,6 +2,11 @@ package tw.me.ychuang.rpc.server;
 
 import tw.me.ychuang.rpc.config.AutoReloadProperties;
 
+/**
+ * A container that wraps a specified configuration for {@link ServerChannelManager}.
+ * 
+ * @author Y.C. Huang
+ */
 public class ServerProperties extends AutoReloadProperties {
 
 	private static final String PROPERTIES_CLASSPATH = "/rpc-server.properties";
@@ -22,6 +27,10 @@ public class ServerProperties extends AutoReloadProperties {
 		super();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see tw.me.ychuang.rpc.config.BasePathProperties#getPropertiesClasspath()
+	 */
 	@Override
 	public String getPropertiesClasspath() {
 		return PROPERTIES_CLASSPATH;
