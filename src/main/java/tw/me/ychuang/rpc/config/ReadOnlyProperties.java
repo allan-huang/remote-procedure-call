@@ -7,6 +7,12 @@ import java.util.Set;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
 
+/**
+ * An abstract class for supporting a read-only configuration fuction by observer pattern.<br>
+ * Notifies all listeners to read a loaded configuration when a associated properties file has been loaded.
+ * 
+ * @author Y.C. Huang
+ */
 public abstract class ReadOnlyProperties extends ClassPathProperties {
 	/**
 	 * A set of {@link ReadOnlyListener} that will be notified

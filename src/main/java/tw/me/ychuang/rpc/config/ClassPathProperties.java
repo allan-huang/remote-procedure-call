@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * A properties file is placed in classpath
+ * A properties file is placed in the classpath
  * 
  * @author Y.C. Huang
  */

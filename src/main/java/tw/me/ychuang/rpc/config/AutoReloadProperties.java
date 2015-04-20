@@ -14,8 +14,8 @@ import org.apache.commons.configuration.reloading.FileChangedReloadingStrategy;
 import tw.me.ychuang.rpc.Constants;
 
 /**
- * Supports a auto-reload fuction by observer pattern.<br>
- * Notifies all listeners to receive a refreshed configuration when a associated properties file has been modified.
+ * An abstract class for supporting a auto-reload configuration fuction by observer pattern.<br>
+ * Notifies all listeners to read a refreshed configuration when a associated properties file has been modified.
  * 
  * @author Y.C. Huang
  */
@@ -93,8 +93,10 @@ public abstract class AutoReloadProperties extends ClassPathProperties {
 	}
 
 	/**
-	 * @param triggerPeriod
-	 * @param unit
+	 * Load a specfied properties file
+	 * 
+	 * @param triggerPeriod Delay the delay between the termination of one execution
+	 * @param unit Unit the time unit of the initialDelay and delay parameters
 	 */
 	public final void load(long triggerPeriod, TimeUnit unit) {
 		synchronized (this) {
