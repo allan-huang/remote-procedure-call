@@ -77,6 +77,9 @@ public abstract class ReadOnlyProperties extends ClassPathProperties {
 		// load a properties file
 		try {
 			this.config = new PropertiesConfiguration();
+			// don't use any delimiter to convert an complex property values to a string array
+			this.config.setDelimiterParsingDisabled(true);
+
 			this.config.setURL(this.getFileUrl());
 			this.config.load();
 

@@ -120,6 +120,9 @@ public abstract class AutoReloadProperties extends ClassPathProperties {
 		// load a properties file
 		try {
 			this.config = new PropertiesConfiguration();
+			// don't use any delimiter to convert an complex property values to a string array
+			this.config.setDelimiterParsingDisabled(true);
+
 			this.config.setURL(this.getFileUrl());
 			this.config.load();
 
@@ -132,13 +135,11 @@ public abstract class AutoReloadProperties extends ClassPathProperties {
 			listener.loadConfiguration(this.config);
 		}
 
+		// assign a reloading strategy and check the properties filed is modified
 		final FileChangedReloadingStrategy strategy = new FileChangedReloadingStrategy();
-
 		long refreshDelay = this.unit.toMillis(this.triggerPeriod);
 		strategy.setRefreshDelay(refreshDelay);
-
 		this.config.setReloadingStrategy(strategy);
-		this.config.setDelimiterParsingDisabled(true);
 
 		// periodically check whether the properties filed is modified
 		this.trigger.scheduleWithFixedDelay(new Runnable() {
