@@ -6,12 +6,14 @@ import org.apache.commons.configuration.PropertiesConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import tw.me.ychuang.rpc.exception.ConfigLoadException;
+
 /**
  * A properties file is placed in the classpath
  * 
  * @author Y.C. Huang
  */
-public abstract class ClassPathProperties {
+public abstract class ClasspathProperties {
 	protected Logger log = LoggerFactory.getLogger(this.getClass());
 
 	/**
@@ -38,7 +40,7 @@ public abstract class ClassPathProperties {
 	 * @return an equivalent URL
 	 */
 	public final URL getFileUrl() {
-		URL fileUrl = ClassPathProperties.class.getResource(this.getPropertiesClasspath());
+		URL fileUrl = ClasspathProperties.class.getResource(this.getPropertiesClasspath());
 
 		if (fileUrl == null) {
 			throw new ConfigLoadException("Fail to load a properties file.").addContextValue("Classpath", this.getPropertiesClasspath());

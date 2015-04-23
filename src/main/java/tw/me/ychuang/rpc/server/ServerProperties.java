@@ -1,14 +1,13 @@
 package tw.me.ychuang.rpc.server;
 
-import tw.me.ychuang.rpc.config.AutoReloadProperties;
+import tw.me.ychuang.rpc.config.ReadOnlyProperties;
 
 /**
  * A container that wraps a specified configuration for {@link ServerChannelManager}.
  * 
  * @author Y.C. Huang
  */
-public class ServerProperties extends AutoReloadProperties {
-
+public class ServerProperties extends ReadOnlyProperties {
 	private static final String PROPERTIES_CLASSPATH = "/rpc-server.properties";
 
 	/**

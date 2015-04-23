@@ -1,4 +1,4 @@
-package tw.me.ychuang.rpc.config;
+package tw.me.ychuang.rpc.exception;
 
 import org.apache.commons.lang3.exception.ContextedRuntimeException;
 import org.apache.commons.lang3.exception.ExceptionContext;
@@ -9,13 +9,6 @@ import org.apache.commons.lang3.exception.ExceptionContext;
  * @author Y.C. Huang
  */
 public class ConfigLoadException extends ContextedRuntimeException {
-	/**
-	 * Constructor
-	 */
-	public ConfigLoadException() {
-		super();
-	}
-
 	/**
 	 * Constructor
 	 * 

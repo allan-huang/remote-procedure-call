@@ -12,6 +12,7 @@ import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.configuration.reloading.FileChangedReloadingStrategy;
 
 import tw.me.ychuang.rpc.Constants;
+import tw.me.ychuang.rpc.exception.ConfigLoadException;
 
 /**
  * An abstract class for supporting a auto-reload configuration fuction by observer pattern.<br>
@@ -19,7 +20,7 @@ import tw.me.ychuang.rpc.Constants;
  * 
  * @author Y.C. Huang
  */
-public abstract class AutoReloadProperties extends ClassPathProperties {
+public abstract class AutoReloadProperties extends ClasspathProperties {
 	/**
 	 * A set of {@link AutoReloadListener} that will be notified
 	 */

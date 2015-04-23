@@ -254,9 +254,7 @@ public class ClientChannelManager implements AutoReloadListener {
 		}
 
 		log.info("Start to shutdown a Netty Client...");
-
-		this.shutdownAllChannelProxies();
-
+		
 		// Shutdown bootstrap and thread pools; release all resources
 		if (executorGroup != null) {
 			executorGroup.shutdownGracefully().awaitUninterruptibly();
@@ -265,6 +263,8 @@ public class ClientChannelManager implements AutoReloadListener {
 		if (eventLoopGroup != null) {
 			eventLoopGroup.shutdownGracefully().awaitUninterruptibly();
 		}
+		
+		this.shutdownAllChannelProxies();
 
 		// for restart
 		this.started = false;
