@@ -3,7 +3,9 @@ package tw.me.ychuang.rpc;
 import io.netty.util.internal.logging.InternalLoggerFactory;
 import io.netty.util.internal.logging.Slf4JLoggerFactory;
 import tw.me.ychuang.rpc.client.ClientChannelManager;
+import tw.me.ychuang.rpc.client.ClientProperties;
 import tw.me.ychuang.rpc.server.ServerChannelManager;
+import tw.me.ychuang.rpc.server.ServerProperties;
 
 /**
  * The main function of Netty 4-based Remote Function Call (RPC) system.
@@ -26,8 +28,8 @@ public class Main {
 				ClientChannelManager.getInstance().shutdown();
 				ServerChannelManager.getInstance().shutdown();
 
-				// ClientProperties.getInstance().unload();
-				// ServerProperties.getInstance().unload();
+				ClientProperties.getInstance().unload();
+				ServerProperties.getInstance().unload();
 			}
 		});
 	}
