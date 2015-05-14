@@ -357,7 +357,7 @@ public class ChannelProxy {
 		ByteBuf reqMsgByteBuf = Unpooled.copiedBuffer(requestMsg.toString(), CharsetUtil.UTF_8);
 
 		// prepare a response future for waiting a real response
-		ResponseFuture<Response> future = new ResponseFuture(id, this.futurePool);
+		ResponseFuture<Response> future = new ResponseFuture<>(id, this.futurePool);
 		this.futurePool.put(id, future);
 
 		// write a json message into this channel
@@ -387,8 +387,7 @@ public class ChannelProxy {
 	public void receive(Response response) throws RpcException {
 		Long id = response.getId();
 		ResponseFuture<Response> future = this.futurePool.get(id);
-
-		boolean successful = false;
+		
 		if (future != null) {
 			future.commit(response);
 			log.info("Receive a response and commit a result. id: {}, channel proxy: {}", id, this);

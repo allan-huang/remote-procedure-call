@@ -61,6 +61,10 @@ public abstract class AutoReloadProperties extends ClasspathProperties {
 		boolean successful = this.listeners.add(listener);
 
 		if (successful) {
+			if (this.config == null) {
+				this.load();
+			}
+			
 			listener.loadConfiguration(this.config);
 		}
 	}

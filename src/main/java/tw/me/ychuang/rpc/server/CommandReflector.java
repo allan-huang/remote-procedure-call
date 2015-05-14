@@ -54,7 +54,7 @@ public class CommandReflector extends CommandExecutor {
 			if (resource == null) {
 				throw new ServerSideException("Fail to find the specified class of the specified skeleton.");
 			}
-			Class skeletonClass = classLoader.loadClass(command.getSkeleton());
+			Class<?> skeletonClass = classLoader.loadClass(command.getSkeleton());
 
 			// second, try to find the invoked method by parameters and classes of parameters
 			Method skeletonMethod = MethodUtils.getMatchingAccessibleMethod(skeletonClass, command.getMethod(), command.findParamClasses());
@@ -70,7 +70,7 @@ public class CommandReflector extends CommandExecutor {
 			} else {
 				Object skeletonInstance = null;
 				// try to find a default constructor without parameter
-				Constructor skeletonConstructor = ConstructorUtils.getMatchingAccessibleConstructor(skeletonClass, new Class[0]);
+				Constructor<?> skeletonConstructor = ConstructorUtils.getMatchingAccessibleConstructor(skeletonClass, new Class[0]);
 				if (skeletonConstructor == null) {
 					// obtain unique instance by excuting getInstance method wrapped by singleton pattern
 					Method getInstanceMethod = MethodUtils.getMatchingAccessibleMethod(skeletonClass, "getInstance", new Class[0]);
