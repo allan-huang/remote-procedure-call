@@ -11,6 +11,14 @@
 	<name>remote-procedure-call</name>
 	<url>http://www.slideshare.net/AllanHuang/netty-4-based-rpc-system-development</url>
 
+	<licenses>
+		<license>
+			<name>Apache License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+	
 	<properties>
 		<jdk.version>1.7</jdk.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -140,31 +148,11 @@
 				</plugin>
 
 				<plugin>
-					<groupId>org.codehaus.mojo</groupId>
-					<artifactId>properties-maven-plugin</artifactId>
-					<version>1.0-alpha-2</version>
-					<executions>
-						<execution>
-							<phase>initialize</phase>
-							<goals>
-								<goal>read-project-properties</goal>
-							</goals>
-							<configuration>
-								<files>
-									<file>build.properties</file>
-								</files>
-							</configuration>
-						</execution>
-					</executions>
-				</plugin>
-
-				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-jar-plugin</artifactId>
 					<version>2.6</version>
 					<configuration>
-						<finalName>${rpc.artifact.name}-${rpc.artifact.version}</finalName>
-						<!-- <finalName>ychuang-${project.artifactId}-${project.version}</finalName> -->
+						<finalName>${project.artifactId}-${project.version}</finalName>
 						<generatePom>false</generatePom>
 						<pomFile>pom.xml</pomFile>
 						<excludes>
@@ -180,6 +168,26 @@
 							</manifest>
 						</archive>
 					</configuration>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-assembly-plugin</artifactId>
+					<version>2.5.4</version>
+					<configuration>
+						<descriptors>
+							<descriptor>src/main/assembly/dist.xml</descriptor>
+						</descriptors>
+					</configuration>
+					<executions>
+						<execution>
+							<id>make-assembly</id>
+							<phase>package</phase>
+							<goals>
+								<goal>single</goal>
+							</goals>
+						</execution>
+					</executions>
 				</plugin>
 			</plugins>
 		</pluginManagement>

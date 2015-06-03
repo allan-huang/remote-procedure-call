@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration monitorInterval="30" status="warn" strict="true">
 	<Properties>
-		<Property name="log-path">${sys:user.home}/logs/rpc</Property>
+		<Property name="log-path">./logs</Property>
 	</Properties>
 	<Appenders>
 		<Console name="console" target="SYSTEM_OUT">
