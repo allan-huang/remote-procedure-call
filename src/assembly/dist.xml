@@ -10,7 +10,7 @@
 	<fileSets>
 		<fileSet>
 			<directory>./</directory>
-			<outputDirectory>/logs</outputDirectory>
+			<outputDirectory>logs</outputDirectory>
 			<excludes>
 				<exclude>*/**</exclude>
 			</excludes>
@@ -44,5 +44,3 @@
 		</dependencySet>
 	</dependencySets>
 </assembly>
-
-

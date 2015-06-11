@@ -90,7 +90,7 @@
 	</scm>
 
 	<build>
-		<defaultGoal>clean install</defaultGoal>
+		<defaultGoal>clean install assembly:single</defaultGoal>
 		<pluginManagement>
 			<plugins>
 				<plugin>
@@ -176,7 +176,7 @@
 					<version>2.5.4</version>
 					<configuration>
 						<descriptors>
-							<descriptor>src/main/assembly/dist.xml</descriptor>
+							<descriptor>src/assembly/dist.xml</descriptor>
 						</descriptors>
 					</configuration>
 					<executions>

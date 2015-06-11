@@ -7,16 +7,7 @@
 		<Console name="console" target="SYSTEM_OUT">
 			<PatternLayout pattern="%t %d %-5p [%C.%M:%L] - %m%n" />
 		</Console>
-		<RollingFile name="3rd-party" fileName="${log-path}/3rd-party.log"
-			filePattern="${log-path}/$${date:yyyy-MM-dd}/3rd-party-%d{yyyy-MM-dd_HH}.%i.log">
-			<ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY" />
-			<PatternLayout pattern="%t %d %-5p [%C.%M:%L] - %m%n" />
-			<Policies>
-				<OnStartupTriggeringPolicy />
-				<TimeBasedTriggeringPolicy interval="1"	modulate="true" />
-				<SizeBasedTriggeringPolicy size="20 MB" />
-			</Policies>
-		</RollingFile>
+
 		<RollingFile name="rpc" fileName="${log-path}/rpc.log"
 			filePattern="${log-path}/$${date:yyyy-MM-dd}/rpc-%d{yyyy-MM-dd_HH}.%i.log">
 			<ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY" />
@@ -40,12 +31,12 @@
 	</Appenders>
 	<Loggers>
 		<Root level="info" additivity="false">
-			<AppenderRef ref="3rd-party" />
+			<AppenderRef ref="rpc" />
 		</Root>
 		<Logger name="tw.me.ychuang.rpc" level="debug" additivity="false">
-			<appender-ref ref="rpc" level="info" />
-			<appender-ref ref="rpc-err" level="warn" />
-			<appender-ref ref="console" level="info" />
+			<AppenderRef ref="rpc" level="info" />
+			<AppenderRef ref="rpc-err" level="warn" />
+			<AppenderRef ref="console" level="info" />
 		</Logger>		
 	</Loggers>
 </Configuration>
