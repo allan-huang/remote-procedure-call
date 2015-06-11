@@ -32,6 +32,7 @@
 	<Loggers>
 		<Root level="info" additivity="false">
 			<AppenderRef ref="rpc" />
+			<AppenderRef ref="console" />
 		</Root>
 		<Logger name="tw.me.ychuang.rpc" level="debug" additivity="false">
 			<AppenderRef ref="rpc" level="info" />

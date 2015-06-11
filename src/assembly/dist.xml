@@ -24,6 +24,7 @@
 			<directory>src/main/resources</directory>
 			<outputDirectory>/</outputDirectory>
 			<includes>
+				<include>log4j2.xml</include>
 				<include>rpc-*.properties</include>
 			</includes>
 		</fileSet>
