@@ -15,6 +15,9 @@ import java.util.concurrent.TimeUnit;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.core.LoggerContext;
+import org.apache.logging.log4j.core.config.Configurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -76,6 +79,10 @@ public class Simulator {
 
 				ClientMeasurer.showStatistics();
 				ServerMeasurer.showStatistics();
+
+				// Disables the "shutdownHook" attribute of the configuration element inside the log4j2.xml and manually shutdowns Log4j system
+				// Refer to http://stackoverflow.com/questions/17400136/how-to-log-within-shutdown-hooks-with-log4j2
+				Configurator.shutdown((LoggerContext) LogManager.getContext());
 			}
 		});
 
