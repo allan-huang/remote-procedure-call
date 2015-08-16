@@ -5,7 +5,7 @@
 
 	<groupId>tw.me.ychuang</groupId>
 	<artifactId>ychuang-rpc</artifactId>
-	<version>1.2.3</version>
+	<version>1.2.4</version>
 	<packaging>jar</packaging>
 
 	<name>remote-procedure-call</name>
@@ -37,11 +37,6 @@
 			<version>[3.3.2,3.4.0)</version>
 		</dependency>
 		<dependency>
-			<groupId>commons-configuration</groupId>
-			<artifactId>commons-configuration</artifactId>
-			<version>[1.10,1.20)</version>
-		</dependency>
-		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
 			<version>[2.3.0,2.4.0)</version>
@@ -60,12 +55,6 @@
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-slf4j-impl</artifactId>
-			<version>[2.2,3.0)</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-jcl</artifactId>
 			<version>[2.2,3.0)</version>
 			<scope>runtime</scope>
 		</dependency>

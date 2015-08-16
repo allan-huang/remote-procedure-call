@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration monitorInterval="30" status="warn" strict="true" shutdownHook="disable">
+<Configuration monitorInterval="30" status="warn" strict="true"	shutdownHook="disable">
 	<Properties>
 		<Property name="log-path">./logs</Property>
 	</Properties>
@@ -14,7 +14,7 @@
 			<PatternLayout pattern="%t %d %-5p [%C.%M:%L] - %m%n" />
 			<Policies>
 				<OnStartupTriggeringPolicy />
-				<TimeBasedTriggeringPolicy interval="1" modulate="true" />
+				<TimeBasedTriggeringPolicy interval="1"	modulate="true" />
 				<SizeBasedTriggeringPolicy size="20 MB" />
 			</Policies>
 		</RollingFile>
@@ -24,20 +24,21 @@
 			<PatternLayout pattern="%t %d %-5p [%C.%M:%L] - %m%n" />
 			<Policies>
 				<OnStartupTriggeringPolicy />
-				<TimeBasedTriggeringPolicy interval="1" modulate="true" />
+				<TimeBasedTriggeringPolicy interval="1"	modulate="true" />
 				<SizeBasedTriggeringPolicy size="20 MB" />
 			</Policies>
 		</RollingFile>
 	</Appenders>
+		
 	<Loggers>
 		<Root level="info" additivity="false">
-			<AppenderRef ref="rpc" />
 			<AppenderRef ref="console" />
+			<AppenderRef ref="rpc" />
 		</Root>
 		<Logger name="tw.me.ychuang.rpc" level="debug" additivity="false">
+			<AppenderRef ref="console" level="info" />
 			<AppenderRef ref="rpc" level="info" />
 			<AppenderRef ref="rpc-err" level="warn" />
-			<AppenderRef ref="console" level="info" />
-		</Logger>		
+		</Logger>
 	</Loggers>
 </Configuration>

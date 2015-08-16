@@ -8,13 +8,13 @@ import org.apache.commons.lang3.exception.ExceptionContext;
  * 
  * @author Y.C. Huang
  */
-public class ConfigLoadException extends ContextedRuntimeException {
+public class ConfigurationException extends ContextedRuntimeException {
 	/**
 	 * Constructor
 	 * 
 	 * @param message the description of this exception
 	 */
-	public ConfigLoadException(String message) {
+	public ConfigurationException(String message) {
 		super(message);
 	}
 
@@ -23,7 +23,7 @@ public class ConfigLoadException extends ContextedRuntimeException {
 	 * 
 	 * @param cause the cause of this exception
 	 */
-	public ConfigLoadException(Throwable cause) {
+	public ConfigurationException(Throwable cause) {
 		super(cause);
 	}
 
@@ -33,7 +33,7 @@ public class ConfigLoadException extends ContextedRuntimeException {
 	 * @param message the description of this exception
 	 * @param cause the cause of this exception
 	 */
-	public ConfigLoadException(String message, Throwable cause) {
+	public ConfigurationException(String message, Throwable cause) {
 		super(message, cause);
 	}
 
@@ -44,7 +44,7 @@ public class ConfigLoadException extends ContextedRuntimeException {
 	 * @param cause the cause of this exception
 	 * @param context a context stores the contextual information
 	 */
-	public ConfigLoadException(String message, Throwable cause, ExceptionContext context) {
+	public ConfigurationException(String message, Throwable cause, ExceptionContext context) {
 		super(message, cause, context);
 	}
 
@@ -52,7 +52,7 @@ public class ConfigLoadException extends ContextedRuntimeException {
 	 * (non-Javadoc)
 	 * @see org.apache.commons.lang3.exception.ContextedRuntimeException#addContextValue(java.lang.String, java.lang.Object)
 	 */
-	public ConfigLoadException addContextValue(String label, Object value) {
+	public ConfigurationException addContextValue(String label, Object value) {
 		super.addContextValue(label, value);
 
 		return this;

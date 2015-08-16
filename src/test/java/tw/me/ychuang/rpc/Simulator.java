@@ -12,7 +12,6 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -23,14 +22,12 @@ import org.slf4j.LoggerFactory;
 
 import tw.me.ychuang.rpc.client.ClientChannelManager;
 import tw.me.ychuang.rpc.client.ClientMeasurer;
-import tw.me.ychuang.rpc.client.ClientProperties;
 import tw.me.ychuang.rpc.server.ServerChannelManager;
 import tw.me.ychuang.rpc.server.ServerMeasurer;
-import tw.me.ychuang.rpc.server.ServerProperties;
 
 /**
  * Main function of all test cases.
- * 
+ *
  * @author Y.C. Huang
  */
 public class Simulator {
@@ -74,9 +71,6 @@ public class Simulator {
 				ClientChannelManager.getInstance().shutdown();
 				ServerChannelManager.getInstance().shutdown();
 
-				ClientProperties.getInstance().unload();
-				ServerProperties.getInstance().unload();
-
 				ClientMeasurer.showStatistics();
 				ServerMeasurer.showStatistics();
 
@@ -86,7 +80,7 @@ public class Simulator {
 			}
 		});
 
-		PropertiesConfiguration config = SimulatorProperties.getInstance().getConfiguration();
+		ClasspathProperties config = SimulatorProperties.getInstance();
 		if (config.isEmpty()) {
 			return;
 		}

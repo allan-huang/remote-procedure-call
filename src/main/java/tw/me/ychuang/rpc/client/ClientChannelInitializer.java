@@ -15,15 +15,15 @@ import io.netty.util.concurrent.EventExecutorGroup;
 
 import java.util.concurrent.TimeUnit;
 
-import org.apache.commons.configuration.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import tw.me.ychuang.rpc.ClasspathProperties;
 import tw.me.ychuang.rpc.Constants;
 
 /**
  * Creates the needed channel handlers in client-side.
- * 
+ *
  * @author Y.C. Huang
  */
 public class ClientChannelInitializer extends ChannelInitializer<SocketChannel> {
@@ -61,14 +61,14 @@ public class ClientChannelInitializer extends ChannelInitializer<SocketChannel> 
 
 	/**
 	 * A kind of constructor
-	 * 
+	 *
 	 * @param executorGroup a Netty EventExecutorGroup
 	 */
 	public ClientChannelInitializer(EventExecutorGroup executorGroup) {
 		super();
 		this.executorGroup = executorGroup;
 
-		Configuration config = ClientProperties.getInstance().getConfiguration();
+		ClasspathProperties config = ClientProperties.getInstance();
 		this.compression = config.getBoolean("client.channel.stream.compression", false);
 	}
 

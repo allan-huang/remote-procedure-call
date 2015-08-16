@@ -14,19 +14,18 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.apache.commons.configuration.PropertiesConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import tw.me.ychuang.rpc.ClasspathProperties;
 import tw.me.ychuang.rpc.Constants;
-import tw.me.ychuang.rpc.config.AutoReloadListener;
 
 /**
  * Starts up and shuts down Netty thread pool.
- * 
+ *
  * @author Y.C. Huang
  */
-public class ServerChannelManager implements AutoReloadListener {
+public class ServerChannelManager {
 	private static final Logger log = LoggerFactory.getLogger(ServerChannelManager.class);
 
 	/**
@@ -43,8 +42,6 @@ public class ServerChannelManager implements AutoReloadListener {
 
 	private ServerChannelManager() {
 		super();
-
-		ServerProperties.getInstance().register(this);
 	}
 
 	/**
@@ -69,7 +66,7 @@ public class ServerChannelManager implements AutoReloadListener {
 
 	/**
 	 * Returns true if this channel manager has been started.
-	 * 
+	 *
 	 * @return true if this channel manager has been started
 	 */
 	public boolean isStarted() {
@@ -78,7 +75,7 @@ public class ServerChannelManager implements AutoReloadListener {
 
 	/**
 	 * Starts up a set of Netty thread pool and listen on a port by according to a property file.
-	 * 
+	 *
 	 * @return whether remoting client is started up or not
 	 */
 	public boolean startUp() {
@@ -86,7 +83,7 @@ public class ServerChannelManager implements AutoReloadListener {
 			return false;
 		}
 
-		PropertiesConfiguration config = ServerProperties.getInstance().getConfiguration();
+		ClasspathProperties config = ServerProperties.getInstance();
 		if (config.isEmpty()) {
 			return false;
 		}
@@ -204,28 +201,5 @@ public class ServerChannelManager implements AutoReloadListener {
 		this.started = false;
 
 		log.info("Finish to shutdown a Netty Server.");
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see tw.me.ychuang.rpc.config.ReadOnlyListener#loadConfiguration(org.apache.commons.configuration.PropertiesConfiguration)
-	 */
-	@Override
-	public void loadConfiguration(PropertiesConfiguration config) {
-		// nothing to do
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see tw.me.ychuang.rpc.config.AutoReloadListener#refreshedConfiguration(org.apache.commons.configuration.PropertiesConfiguration)
-	 */
-	@Override
-	public void refreshedConfiguration(PropertiesConfiguration refreshedConfig) {
-		log.info("Receive a event notifies that the server properties file has been updated.");
-
-		this.shutdown();
-		this.startUp();
-
-		log.info("Finish to restart the server channel manager.");
 	}
 }

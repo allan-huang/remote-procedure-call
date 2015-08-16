@@ -8,7 +8,7 @@ import tw.me.ychuang.rpc.Result;
 
 /**
  * Finds the matching callee and invokes it by naming rule and Java Reflection API.
- * 
+ *
  * @author Y.C. Huang
  */
 public abstract class CommandExecutor {
@@ -33,7 +33,7 @@ public abstract class CommandExecutor {
 	/**
 	 * Dispatches a command to the matching skeleton, executes the method of skeleton by the command,<br>
 	 * and return a result finally.
-	 * 
+	 *
 	 * @param command a command
 	 * @return a result with a return or an exception
 	 */

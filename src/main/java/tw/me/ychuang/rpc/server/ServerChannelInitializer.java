@@ -12,13 +12,14 @@ import io.netty.handler.codec.string.StringEncoder;
 import io.netty.util.CharsetUtil;
 import io.netty.util.concurrent.EventExecutorGroup;
 
-import org.apache.commons.configuration.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import tw.me.ychuang.rpc.ClasspathProperties;
+
 /**
  * Creates the needed channel handlers in server-side.
- * 
+ *
  * @author Y.C. Huang
  */
 public class ServerChannelInitializer extends ChannelInitializer<SocketChannel> {
@@ -48,14 +49,14 @@ public class ServerChannelInitializer extends ChannelInitializer<SocketChannel> 
 
 	/**
 	 * A kind of constructor
-	 * 
+	 *
 	 * @param executorGroup a Netty EventExecutorGroup
 	 */
 	public ServerChannelInitializer(EventExecutorGroup executorGroup) {
 		super();
 		this.executorGroup = executorGroup;
 
-		Configuration config = ServerProperties.getInstance().getConfiguration();
+		ClasspathProperties config = ServerProperties.getInstance();
 		this.compression = config.getBoolean("server.channel.stream.compression", false);
 	}
 

@@ -26,25 +26,23 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import org.apache.commons.configuration.Configuration;
-import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import tw.me.ychuang.rpc.ClasspathProperties;
 import tw.me.ychuang.rpc.Constants;
 import tw.me.ychuang.rpc.Constants.ChannelSelectionType;
-import tw.me.ychuang.rpc.config.AutoReloadListener;
 import tw.me.ychuang.rpc.exception.ClientSideException;
 import tw.me.ychuang.rpc.exception.RpcException;
 
 /**
  * Manages all channel proxies, starts up and shuts down Netty thread pool.<br>
  * It’s like one JDBC Driver Manager conceptually.
- * 
+ *
  * @author Y.C. Huang
  */
-public class ClientChannelManager implements AutoReloadListener {
+public class ClientChannelManager {
 	private static final Logger log = LoggerFactory.getLogger(ClientChannelManager.class);
 
 	/**
@@ -61,8 +59,6 @@ public class ClientChannelManager implements AutoReloadListener {
 
 	private ClientChannelManager() {
 		super();
-
-		ClientProperties.getInstance().register(this);
 	}
 
 	/**
@@ -87,7 +83,7 @@ public class ClientChannelManager implements AutoReloadListener {
 
 	/**
 	 * Gets the next index for selecting the next channel proxy from channel pool
-	 * 
+	 *
 	 * @return index
 	 */
 	private synchronized Integer nextIndex() {
@@ -118,7 +114,7 @@ public class ClientChannelManager implements AutoReloadListener {
 
 	/**
 	 * Returns true if this channel manager has been started.
-	 * 
+	 *
 	 * @return true if this channel manager has been started
 	 */
 	public boolean isStarted() {
@@ -127,7 +123,7 @@ public class ClientChannelManager implements AutoReloadListener {
 
 	/**
 	 * Starts up a set of Netty channels by according to a property file.
-	 * 
+	 *
 	 * @return whether remoting client is started up or not
 	 */
 	public boolean startUp() {
@@ -135,7 +131,7 @@ public class ClientChannelManager implements AutoReloadListener {
 			return false;
 		}
 
-		PropertiesConfiguration config = ClientProperties.getInstance().getConfiguration();
+		ClasspathProperties config = ClientProperties.getInstance();
 		if (config.isEmpty()) {
 			return false;
 		}
@@ -272,29 +268,6 @@ public class ClientChannelManager implements AutoReloadListener {
 		log.info("Finish to shutdown a Netty Client.");
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see tw.me.ychuang.rpc.config.ReadOnlyListener#loadConfiguration(org.apache.commons.configuration.PropertiesConfiguration)
-	 */
-	@Override
-	public void loadConfiguration(PropertiesConfiguration loadedConfig) {
-		// nothing to do
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see tw.me.ychuang.rpc.config.AutoReloadListener#refreshedConfiguration(org.apache.commons.configuration.PropertiesConfiguration)
-	 */
-	@Override
-	public void refreshedConfiguration(PropertiesConfiguration refreshedonfig) {
-		log.info("Receive a event notifies that the client properties file has been updated.");
-
-		this.shutdown();
-		this.startUp();
-
-		log.info("Finish to restart the client channel manager.");
-	}
-
 	private void addChannelProxy(ChannelProxy newChannelProxy) {
 		this.channelPool.put(newChannelProxy.getId(), newChannelProxy);
 		newChannelProxy.setManager(this);
@@ -302,7 +275,7 @@ public class ClientChannelManager implements AutoReloadListener {
 
 	/**
 	 * Gets the specified channel proxy by its id
-	 * 
+	 *
 	 * @param id a channel proxy id
 	 * @return the matching channel proxy
 	 */
@@ -316,7 +289,7 @@ public class ClientChannelManager implements AutoReloadListener {
 
 	/**
 	 * Gets the specified channel proxy by the corresponding Netty Channel
-	 * 
+	 *
 	 * @param channel a Netty Channel
 	 * @return the matching channel proxy
 	 */
@@ -339,7 +312,7 @@ public class ClientChannelManager implements AutoReloadListener {
 
 	/**
 	 * Finds the matching channel proxies by a host and a port
-	 * 
+	 *
 	 * @param serverHost the IP / host of remote server
 	 * @param serverPort the port number of that Netty server listens on.
 	 * @return all matching channel proxies
@@ -370,7 +343,7 @@ public class ClientChannelManager implements AutoReloadListener {
 
 	/**
 	 * Lists all channel proxies and shows their status.
-	 * 
+	 *
 	 * @return all channel proxies
 	 */
 	public List<ChannelProxy> listChannelProxies() {
@@ -387,12 +360,12 @@ public class ClientChannelManager implements AutoReloadListener {
 
 	/**
 	 * Dispatches one of channel proxies of the different server to the stub.
-	 * 
+	 *
 	 * @return an available channel proxy
 	 * @throws RpcException if there is no available channel.
 	 */
 	public ChannelProxy selectChannelProxy() throws RpcException {
-		Configuration config = ClientProperties.getInstance().getConfiguration();
+		ClasspathProperties config = ClientProperties.getInstance();
 		String selectionType = config.getString("client.channel.selection.type", ChannelSelectionType.round_robin.toString());
 
 		log.info("Start to select a channel proxy by {} rule.", selectionType);
@@ -425,7 +398,7 @@ public class ClientChannelManager implements AutoReloadListener {
 
 	/**
 	 * Dispatches one of channel proxies of the different server to the stub by according to the Round-Robin rule.
-	 * 
+	 *
 	 * @return an available channel proxy
 	 * @throws RpcException if there is no available channel.
 	 */
@@ -477,7 +450,7 @@ public class ClientChannelManager implements AutoReloadListener {
 
 	/**
 	 * Lists and sorts all channel proxies in ascending order by workload
-	 * 
+	 *
 	 * @return all sorted channel proxies in ascending order
 	 */
 	private List<ChannelProxy> sortChannelProxiesByWorkload() {
@@ -499,7 +472,7 @@ public class ClientChannelManager implements AutoReloadListener {
 
 	/**
 	 * Dispatches one of channel proxies of the different server to the stub by according to the workload rule.
-	 * 
+	 *
 	 * @return an available channel proxy
 	 * @throws RpcException if there is no available channel.
 	 */
@@ -557,7 +530,7 @@ public class ClientChannelManager implements AutoReloadListener {
 	/**
 	 * The Netty Channels are paused and don’t accept any command temporarily.<br>
 	 * These channels are connected with the same server host and port.
-	 * 
+	 *
 	 * @param serverHost the IP / host of remote server
 	 * @param serverPort the port number of that Netty server listens on.
 	 */
@@ -571,7 +544,7 @@ public class ClientChannelManager implements AutoReloadListener {
 
 	/**
 	 * A Netty Channel is paused and don’t accept any command temporarily.
-	 * 
+	 *
 	 * @param channelProxy the specified channel proxy
 	 */
 	private void pauseChannelProxy(final ChannelProxy channelProxy) {
@@ -596,7 +569,7 @@ public class ClientChannelManager implements AutoReloadListener {
 	/**
 	 * Closes the Netty channels and stops accepting any command.<br>
 	 * These channels are connected with the same server host and port.
-	 * 
+	 *
 	 * @param serverHost the IP / host of remote server
 	 * @param serverPort the port number of that Netty server listens on.
 	 */
@@ -610,7 +583,7 @@ public class ClientChannelManager implements AutoReloadListener {
 
 	/**
 	 * Closes a Netty channel and stops accepting any command.
-	 * 
+	 *
 	 * @param channelProxy the specified channel proxy
 	 */
 	public void stopChannelProxy(final ChannelProxy channelProxy) {
@@ -669,7 +642,7 @@ public class ClientChannelManager implements AutoReloadListener {
 	/**
 	 * Reconnects Netty channels and start to accept any command again.<br>
 	 * These channels are connected with the same server host and port.
-	 * 
+	 *
 	 * @param serverHost the IP / host of remote server
 	 * @param serverPort the port number of that Netty server listens on.
 	 */
@@ -701,7 +674,7 @@ public class ClientChannelManager implements AutoReloadListener {
 
 	/**
 	 * Reconnects Netty channels and start to accept any command again.
-	 * 
+	 *
 	 * @param channelProxy the specified channel proxy
 	 */
 	private void restartChannelProxy(final ChannelProxy channelProxy) {

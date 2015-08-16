@@ -13,7 +13,7 @@ import tw.me.ychuang.rpc.exception.ServerSideException;
 
 /**
  * Creates a command, selects a channel proxy, sends the command, and gets a result finally.
- * 
+ *
  * @author Y.C. Huang
  */
 public class BizServiceStub {
@@ -39,7 +39,7 @@ public class BizServiceStub {
 
 	/**
 	 * Echoes a random string
-	 * 
+	 *
 	 * @param randomString a random string
 	 * @return an original random string appends the specified string
 	 */
@@ -84,7 +84,7 @@ public class BizServiceStub {
 
 	/**
 	 * Create a user
-	 * 
+	 *
 	 * @param newId a new user id
 	 * @param clientSideTime update time in client side
 	 * @return a user
@@ -131,7 +131,7 @@ public class BizServiceStub {
 
 	/**
 	 * Update a user
-	 * 
+	 *
 	 * @param user a user
 	 */
 	public void updateUser(User user) {
@@ -172,7 +172,7 @@ public class BizServiceStub {
 
 	/**
 	 * Find a user
-	 * 
+	 *
 	 * @param id a user id
 	 * @return a user
 	 * @throws Exception any exception
@@ -219,7 +219,7 @@ public class BizServiceStub {
 
 	/**
 	 * Delete a user
-	 * 
+	 *
 	 * @param id a user id
 	 * @return true if the user has been deleted successfully
 	 */
