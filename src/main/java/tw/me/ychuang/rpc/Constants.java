@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * System constants
- * 
+ *
  * @author Y.C. Huang
  */
 public final class Constants {
@@ -24,8 +24,6 @@ public final class Constants {
 	public static int CONNECT_TIMEOUT = 15000;
 
 	public static int HEARTBEAT_PERIOD = 60;
-
-	public static String ISO_8601_PATTERN = "yyyy-MM-dd'T'hh:mm:ssZ";
 
 	public static String REQUEST_BOUNDARY = new String(new byte[] { 0 }, CharsetUtil.UTF_8);
 

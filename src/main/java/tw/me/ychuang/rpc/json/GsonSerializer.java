@@ -2,7 +2,6 @@ package tw.me.ychuang.rpc.json;
 
 import java.util.Date;
 
-import tw.me.ychuang.rpc.Constants;
 import tw.me.ychuang.rpc.Request;
 import tw.me.ychuang.rpc.Response;
 
@@ -12,7 +11,7 @@ import com.google.gson.JsonElement;
 
 /**
  * A JSON serialization utility is based on GSON library.
- * 
+ *
  * @author Y.C. Huang
  */
 public class GsonSerializer extends JsonSerializer {
@@ -28,7 +27,6 @@ public class GsonSerializer extends JsonSerializer {
 		GSON_BUILDER.registerTypeAdapter(Response.class, new ResponseTypeAdapter());
 		GSON_BUILDER.registerTypeAdapter(Date.class, new DateTypeAdapter());
 		GSON_BUILDER.serializeNulls();
-		GSON_BUILDER.setDateFormat(Constants.ISO_8601_PATTERN);
 
 		DEFAULT_GSON = GSON_BUILDER.create();
 	}
